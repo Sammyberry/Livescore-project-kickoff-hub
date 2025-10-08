@@ -1,8 +1,11 @@
-function MatchCard() {
+function MatchCard({ home, away, score, status, time }) {
   return (
-    <div className="bg-gray-800 text-white p-4 rounded-lg">
-      <p>Team A vs Team B</p>
-      <p>Score: 0 - 0</p>
+    <div>
+      <p>
+        {home} {score !== "–" ? score : "vs"} {away}
+      </p>
+      <p>{status}</p>
+      <p>{time}</p>
     </div>
   );
 }
