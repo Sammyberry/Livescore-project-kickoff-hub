@@ -1,36 +1,49 @@
 import { useNavigate } from "react-router-dom";
 import Header from "../components/Header";
-import MatchCard from "../components/MatchCard";
+
+import arsenal from "../assets/logos/arsenal.png";
+import chelsea from "../assets/logos/chelsea.png";
+import barcelona from "../assets/logos/barcelona.png";
+import realmadrid from "../assets/logos/realmadrid.png";
+import psg from "../assets/logos/psg.png";
+import marseille from "../assets/logos/marseille.png";
+
 
 function Landing() {
   const navigate = useNavigate();
 
-  const previewMatches = [
-    {
-      id: 1,
-      home: "Arsenal",
-      away: "Chelsea",
-      score: "1–2",
-      status: "LIVE",
-      time: "Sat 7:30 PM",
-    },
-    {
-      id: 2,
-      home: "Barcelona",
-      away: "Real Madrid",
-      score: "–",
-      status: "Upcoming",
-      time: "Sat 9:30 PM",
-    },
-    {
-      id: 3,
-      home: "PSG",
-      away: "Marseille",
-      score: "–",
-      status: "Upcoming",
-      time: "Sun 8:00 PM",
-    },
-  ];
+const previewMatches = [
+  {
+    id: 1,
+    home: "Arsenal",
+    away: "Chelsea",
+    homeLogo: arsenal,
+    awayLogo: chelsea,
+    score: "1–2",
+    status: "LIVE",
+    time: "Sat 7:30 PM",
+  },
+  {
+    id: 2,
+    home: "Barcelona",
+    away: "Real Madrid",
+    homeLogo: barcelona,
+    awayLogo: realmadrid,
+    score: "–",
+    status: "Upcoming",
+    time: "Sat 9:30 PM",
+  },
+  {
+    id: 3,
+    home: "PSG",
+    away: "Marseille",
+    homeLogo: psg,
+    awayLogo: marseille,
+    score: "–",
+    status: "Upcoming",
+    time: "Sun 8:00 PM",
+  },
+];
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -70,14 +83,44 @@ function Landing() {
           </button>
         </form>
 
-        <section className="mt-10 w-full max-w-6xl mx-auto px-4">
+        <section className="mt-10 w-full max-w-4xl mx-auto px-4">
           <h2 className="text-2xl font-semibold mb-4 text-left">
             Featured Matches
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full">
-            {previewMatches.map((match) => (
-              <MatchCard key={match.id} {...match} />
-            ))}
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {/* Card 1 */}
+            <div className="bg-[#1E1F29] p-5 rounded-xl text-center shadow-md hover:shadow-lg transition-all">
+              <h3 className="text-white font-semibold mb-1">
+                Arsenal vs Chelsea
+              </h3>
+              <p className="text-gray-400 text-sm mb-2">Sat 7:30 PM</p>
+              <span className="bg-green-500 text-black text-xs font-semibold px-2 py-1 rounded">
+                LIVE
+              </span>
+            </div>
+
+            {/* Card 2 */}
+            <div className="bg-[#1E1F29] p-5 rounded-xl text-center shadow-md hover:shadow-lg transition-all">
+              <h3 className="text-white font-semibold mb-1">
+                Barcelona vs Real Madrid
+              </h3>
+              <p className="text-gray-400 text-sm mb-2">Sat 9:30 PM</p>
+              <span className="bg-gray-600 text-white text-xs font-semibold px-2 py-1 rounded">
+                Upcoming
+              </span>
+            </div>
+
+            {/* Card 3 */}
+            <div className="bg-[#1E1F29] p-5 rounded-xl text-center shadow-md hover:shadow-lg transition-all">
+              <h3 className="text-white font-semibold mb-1">
+                PSG vs Marseille
+              </h3>
+              <p className="text-gray-400 text-sm mb-2">Sun 8:00 PM</p>
+              <span className="bg-gray-600 text-white text-xs font-semibold px-2 py-1 rounded">
+                Upcoming
+              </span>
+            </div>
           </div>
         </section>
       </main>
