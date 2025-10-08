@@ -1,7 +1,10 @@
+import { useNavigate } from "react-router-dom";
 import Header from "../components/Header";
 import MatchCard from "../components/MatchCard";
 
 function Landing() {
+  const navigate = useNavigate();
+
   const previewMatches = [
     {
       id: 1,
@@ -29,25 +32,24 @@ function Landing() {
     },
   ];
 
+  const handleLogin = (e) => {
+    e.preventDefault();
+    navigate("/dashboard");
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#0A0A0F] to-[#121420] text-white flex flex-col items-center">
-      {/* Header */}
       <header className="w-full flex justify-start px-6 py-4">
         <Header />
       </header>
 
-      {/* Hero Section */}
       <main className="flex flex-col items-center justify-center text-center mt-10 px-6 w-full max-w-2xl">
         <h1 className="text-4xl md:text-5xl font-bold leading-tight mb-4">
           Your Hub for Match Insights <br /> & Live Scores
         </h1>
-        <p className="text-gray-400 mb-6">
-          Stay updated with live matches, stats, and your favorite leagues.
-        </p>
 
-        {/* Auth Form */}
         <form
-          onSubmit={(e) => e.preventDefault()}
+          onSubmit={handleLogin}
           className="w-full bg-[#1E1F29] rounded-2xl p-6 shadow-lg flex flex-col gap-4"
         >
           <input
@@ -68,8 +70,7 @@ function Landing() {
           </button>
         </form>
 
-        {/* Featured Matches */}
-        <section className="mt-10 w-full">
+        <section className="mt-10 w-full max-w-6xl mx-auto px-4">
           <h2 className="text-2xl font-semibold mb-4 text-left">
             Featured Matches
           </h2>
