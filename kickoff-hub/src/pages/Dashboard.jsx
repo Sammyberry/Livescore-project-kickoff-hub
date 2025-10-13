@@ -35,6 +35,7 @@ function Dashboard() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#0A0A0F] to-[#121420] text-white flex flex-col items-center px-4 py-6">
+     
       {/* Header */}
       <header className="w-full max-w-6xl flex justify-between items-center mb-10">
         <Header />
@@ -54,11 +55,13 @@ function Dashboard() {
         </div>
       </header>
 
-      <main className="w-full max-w-6xl space-y-10">
-        {/* Live Matches (3 cards) */}
+      <main className="w-full max-w-6xl space-y-12">
+        {/* Live Matches */}
         <section>
-          <h2 className="text-xl font-semibold mb-4">Live Matches</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <h2 className="text-xl font-semibold mb-6 text-gray-200">
+            Live Matches
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 justify-items-center">
             {liveMatches.map((m) => (
               <MatchCard
                 key={m.id}
@@ -72,10 +75,12 @@ function Dashboard() {
           </div>
         </section>
 
-        {/* Upcoming Fixtures (large cards) */}
+        {/* Upcoming Fixtures */}
         <section>
-          <h2 className="text-xl font-semibold mb-4">Upcoming Fixtures</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <h2 className="text-xl font-semibold mb-6 text-gray-200">
+            Upcoming Fixtures
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-10 justify-items-center">
             {upcomingFixtures.map((fx) => (
               <FixtureCard
                 key={fx.id}
@@ -91,37 +96,39 @@ function Dashboard() {
 
         {/* Trending Match */}
         <section>
-          <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
+          <h2 className="text-xl font-semibold mb-6 flex items-center gap-2 text-gray-200">
             Trending Match <span className="text-red-500 text-lg">🔥</span>
           </h2>
-          <div className="bg-[#1E1F29] rounded-2xl p-8 border border-gray-700 hover:border-blue-500 transition flex flex-col items-center shadow-lg shadow-black/40">
-            <div className="flex items-center justify-center gap-6 mb-3">
+          <div className="bg-[#1E1F29] rounded-2xl p-10 border border-gray-700 hover:border-blue-500 hover:shadow-blue-500/30 transition-all flex flex-col items-center text-center shadow-lg shadow-black/40 max-w-3xl mx-auto">
+            <div className="flex items-center justify-center gap-6 mb-4">
               <div className="flex items-center gap-2">
                 <img
                   src={logoMap[trending.home]}
                   alt={trending.home}
-                  className="w-10 h-10 object-contain"
+                  className="w-12 h-12 object-contain"
                 />
                 <p className="font-bold text-lg">{trending.home}</p>
               </div>
 
-              <span className="text-2xl font-extrabold">{trending.score}</span>
+              <span className="text-3xl font-extrabold text-blue-400">
+                {trending.score}
+              </span>
 
               <div className="flex items-center gap-2">
                 <p className="font-bold text-lg">{trending.away}</p>
                 <img
                   src={logoMap[trending.away]}
                   alt={trending.away}
-                  className="w-10 h-10 object-contain"
+                  className="w-12 h-12 object-contain"
                 />
               </div>
             </div>
 
-            <div className="flex flex-col items-center mt-2">
-              <span className="text-green-400 text-xs font-semibold bg-green-900/70 px-3 py-1 rounded-md mb-1">
+            <div className="flex flex-col items-center">
+              <span className="text-green-400 text-xs font-semibold bg-green-900/70 px-4 py-1 rounded-md mb-2">
                 {trending.status}
               </span>
-              <button className="underline text-sm text-gray-400 mt-6 hover:text-white">
+              <button className="underline text-sm text-gray-400 hover:text-white">
                 STAT
               </button>
             </div>
@@ -130,15 +137,17 @@ function Dashboard() {
 
         {/* Quick Stats */}
         <section>
-          <h2 className="text-xl font-semibold mb-4">Quick Stats</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <h2 className="text-xl font-semibold mb-6 text-gray-200">
+            Quick Stats
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 justify-items-center">
             {quickStats.map((s) => (
               <div
                 key={s.id}
-                className="bg-[#1E1F29] rounded-2xl p-5 text-center border border-gray-700 shadow-lg shadow-black/40"
+                className="bg-[#1E1F29] rounded-2xl p-6 text-center border border-gray-700 hover:border-blue-500 hover:shadow-blue-500/20 transition-all shadow-lg shadow-black/40 w-full"
               >
                 <p className="text-gray-400 text-sm">{s.label}</p>
-                <p className="text-lg font-bold">{s.value}</p>
+                <p className="text-2xl font-bold text-white">{s.value}</p>
               </div>
             ))}
           </div>
