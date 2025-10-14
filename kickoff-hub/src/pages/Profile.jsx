@@ -1,8 +1,5 @@
 import Header from "../components/Header";
 import { useNavigate } from "react-router-dom";
-import chelsea from "../assets/logos/chelsea.png";
-import barcelona from "../assets/logos/barcelona.png";
-import realmadrid from "../assets/logos/realmadrid.png";
 import premier from "../assets/logos/premier.png";
 import laliga from "../assets/logos/laliga.png";
 import ligue1 from "../assets/logos/ligue1.png";
@@ -18,6 +15,7 @@ function Profile() {
       {/* Header (matching Dashboard) */}
       <header className="w-full max-w-6xl flex justify-between items-center mb-10">
         <Header />
+        
         <div className="flex items-center gap-6">
           <button
             onClick={() => navigate("/dashboard")}

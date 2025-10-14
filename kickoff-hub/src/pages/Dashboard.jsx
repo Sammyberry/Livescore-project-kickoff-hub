@@ -34,11 +34,14 @@ function Dashboard() {
   const { liveMatches, upcomingFixtures, trending, quickStats } = useStore();
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#0A0A0F] to-[#121420] text-white flex flex-col items-center px-4 py-6">
-     
+    <div className="min-h-screen bg-[#0A0A0F] text-white flex flex-col items-center px-4 py-6">
       {/* Header */}
       <header className="w-full max-w-6xl flex justify-between items-center mb-10">
         <Header />
+        <span className="font-light italic text-gray-200 text-lg animate-goldGlow">
+          Stay Ahead of Every Kick!
+        </span>
+
         <div className="flex items-center gap-6">
           <button
             onClick={() => navigate("/")}
@@ -48,7 +51,7 @@ function Dashboard() {
           </button>
           <button
             onClick={() => navigate("/profile")}
-            className="bg-blue-600 cursor-pointer hover:bg-blue-700 text-white font-medium py-2 px-6 rounded-lg transition"
+            className="cursor-pointer hover:bg-[#1E1F29] hover:underline text-white font-medium py-2 px-6 rounded-lg transition"
           >
             Profile
           </button>
