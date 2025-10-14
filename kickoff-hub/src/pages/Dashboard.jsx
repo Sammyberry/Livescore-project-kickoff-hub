@@ -43,17 +43,23 @@ function Dashboard() {
         </span>
 
         <div className="flex items-center gap-6">
-          <button
-            onClick={() => navigate("/")}
-            className="text-gray-300 cursor-pointer hover:text-white underline transition"
-          >
-            Go to Landing Page
-          </button>
+          {/* {Profile Button} */}
           <button
             onClick={() => navigate("/profile")}
             className="cursor-pointer hover:bg-[#1E1F29] hover:underline text-white font-medium py-2 px-6 rounded-lg transition"
           >
             Profile
+          </button>
+
+          {/* {Logout Button} */}
+          <button
+            onClick={() => {
+              localStorage.removeItem("lastUser");
+              navigate("/");
+            }}
+            className="text-red-500 hover:text-red-400 font-semibold transition"
+          >
+            Logout
           </button>
         </div>
       </header>

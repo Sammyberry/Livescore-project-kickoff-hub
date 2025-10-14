@@ -1,5 +1,6 @@
 import { useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import Header from "../components/Header";
 
@@ -13,6 +14,15 @@ import marseille from "../assets/logos/marseille.png";
 function Landing() {
   const navigate = useNavigate();
 
+  useEffect(() => {
+    const users = JSON.parse(localStorage.getItem("users") || "{}");
+    const savedName = localStorage.getItem("lastUser");
+
+    if (savedName && users[savedName]) {
+      navigate("/dashboard");
+    }
+  }, []);
+
   // Username state and validation
   const [username, setUsername] = useState("");
   const [usernameTouched, setUsernameTouched] = useState(false);
@@ -21,6 +31,8 @@ function Landing() {
   const [password, setPassword] = useState("");
   const [passwordTouched, setPasswordTouched] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  // user info & feedback
+  const [userMessage, setUserMessage] = useState("");
 
   // Username validation logic
   const usernameError = useMemo(() => {
@@ -50,11 +62,33 @@ function Landing() {
   // Handle form submission
   const handleLogin = (e) => {
     e.preventDefault();
+
     if (!isUsernameValid || !isPasswordValid) {
       alert("Please enter valid username and password.");
       return;
     }
-    navigate("/dashboard");
+
+    // Retrieve all saved users (or empty object if none)
+    const users = JSON.parse(localStorage.getItem("users") || "{}");
+
+    // check if username exists
+    if (users[username]) {
+      // existing user
+      if (users[username] === password) {
+        setUserMessage(`Welcome back, ${username}!`);
+        localStorage.setItem("lastUser", username);
+        navigate("/dashboard");
+      } else {
+        setUserMessage("Incorrect password. Please try again.");
+      }
+    } else {
+      // first-time user → save them
+      users[username] = password;
+      localStorage.setItem("users", JSON.stringify(users));
+      setUserMessage(`Account created for ${username}! Redirecting...`);
+      localStorage.setItem("lastUser", username);
+      navigate("/dashboard");
+    }
   };
 
   const previewMatches = [
@@ -138,12 +172,12 @@ function Landing() {
               onBlur={() => setPasswordTouched(true)}
               className={`p-3 pr-10 rounded-lg bg-transparent border focus:outline-none w-full 
                  ${
-                    passwordTouched
-                   ? passwordError
-                    ? "border-red-500 focus:ring-2 focus:ring-red-500"
-                    : "border-green-500 focus:ring-2 focus:ring-green-500"
-                    : "border-gray-600 focus:ring-2 focus:ring-blue-500"
-                  }`}
+                   passwordTouched
+                     ? passwordError
+                       ? "border-red-500 focus:ring-2 focus:ring-red-500"
+                       : "border-green-500 focus:ring-2 focus:ring-green-500"
+                     : "border-gray-600 focus:ring-2 focus:ring-blue-500"
+                 }`}
             />
 
             {/* Toggle eye icon */}
@@ -174,6 +208,11 @@ function Landing() {
           >
             Login / Sign Up
           </button>
+          {userMessage && (
+            <p className="text-sm text-gray-300 mt-2 text-center">
+              {userMessage}
+            </p>
+          )}
         </form>
 
         <section className="mt-10 w-full max-w-4xl mx-auto px-4">
