@@ -1,5 +1,6 @@
 import { useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
+import { Eye, EyeOff } from "lucide-react";
 import Header from "../components/Header";
 
 import arsenal from "../assets/logos/arsenal.png";
@@ -20,7 +21,6 @@ function Landing() {
   const [password, setPassword] = useState("");
   const [passwordTouched, setPasswordTouched] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-
 
   // Username validation logic
   const usernameError = useMemo(() => {
@@ -137,13 +137,13 @@ function Landing() {
               onChange={(e) => setPassword(e.target.value)}
               onBlur={() => setPasswordTouched(true)}
               className={`p-3 pr-10 rounded-lg bg-transparent border focus:outline-none w-full 
-      ${
-        passwordTouched
-          ? passwordError
-            ? "border-red-500 focus:ring-2 focus:ring-red-500"
-            : "border-green-500 focus:ring-2 focus:ring-green-500"
-          : "border-gray-600 focus:ring-2 focus:ring-blue-500"
-      }`}
+                 ${
+                    passwordTouched
+                   ? passwordError
+                    ? "border-red-500 focus:ring-2 focus:ring-red-500"
+                    : "border-green-500 focus:ring-2 focus:ring-green-500"
+                    : "border-gray-600 focus:ring-2 focus:ring-blue-500"
+                  }`}
             />
 
             {/* Toggle eye icon */}
@@ -152,7 +152,7 @@ function Landing() {
               onClick={() => setShowPassword(!showPassword)}
               className="absolute inset-y-0 right-3 flex items-center text-gray-400 hover:text-white"
             >
-              {showPassword ? "🙈" : "👁️"}
+              {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
             </button>
           </div>
 
