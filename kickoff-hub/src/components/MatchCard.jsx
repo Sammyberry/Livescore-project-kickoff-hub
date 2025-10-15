@@ -1,14 +1,12 @@
 function MatchCard({ home, away, score, homeLogo, awayLogo, onClick }) {
   return (
     <div
-      onClick={onClick}
+      onClick={onClick} // ✅ make the whole card clickable
       className="bg-[#1E1F29] rounded-2xl p-6 border border-gray-700 
       hover:border-blue-500 hover:shadow-blue-500/30 hover:scale-[1.03]
       transition-transform duration-300 ease-out text-center 
       shadow-lg shadow-black/40 w-full max-w-[260px] sm:max-w-[320px]
       cursor-pointer"
-      role="button"
-      aria-label={`View details for ${home} vs ${away}`}
     >
       <div className="flex items-center justify-between gap-3 flex-wrap">
         {/* Home Team */}
