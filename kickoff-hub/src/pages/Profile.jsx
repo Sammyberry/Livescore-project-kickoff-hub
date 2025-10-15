@@ -15,7 +15,7 @@ function Profile() {
       {/* Header (matching Dashboard) */}
       <header className="w-full max-w-6xl flex justify-between items-center mb-10">
         <Header />
-        
+
         <div className="flex items-center gap-6">
           <button
             onClick={() => navigate("/dashboard")}
@@ -69,7 +69,9 @@ function Profile() {
             ].map((league) => (
               <div
                 key={league.name}
-                className="flex items-center justify-start gap-4 bg-[#2A2A2A] hover:bg-[#333333] transition-all rounded-xl p-5 shadow-md"
+                className="lex items-center justify-start gap-3 bg-[#2A2A2A] hover:bg-[#323232] 
+             transition-all duration-300 rounded-xl p-4 shadow-md 
+             hover:shadow-lg hover:shadow-blue-500/20 hover:scale-[1.03] "
               >
                 <img
                   src={league.logo}
