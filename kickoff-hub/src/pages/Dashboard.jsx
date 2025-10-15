@@ -34,16 +34,16 @@ function Dashboard() {
   const { liveMatches, upcomingFixtures, trending, quickStats } = useStore();
 
   return (
-    <div className="min-h-screen bg-[#0A0A0F] text-white flex flex-col items-center px-4 py-6">
+    <div className="min-h-screen bg-gradient-to-b from-[#0A0A0F] to-[#121420] text-white flex flex-col items-center px-4 py-6 relative">
       {/* Header */}
-      <header className="w-full max-w-6xl flex justify-between items-center mb-10">
+      <header className="w-full max-w-6xl flex flex-col md:flex-row justify-between items-center mb-10 gap-4">
         <Header />
-        <span className="font-light italic text-gray-200 text-lg animate-goldGlow">
+        <span className="font-light italic text-gray-200 text-lg animate-goldShimmer text-center">
           Stay Ahead of Every Kick!
         </span>
 
         <div className="flex items-center gap-6">
-          {/* {Profile Button} */}
+          {/* Profile Button */}
           <button
             onClick={() => navigate("/profile")}
             className="cursor-pointer hover:bg-[#1E1F29] hover:underline text-white font-medium py-2 px-6 rounded-lg transition"
@@ -51,7 +51,7 @@ function Dashboard() {
             Profile
           </button>
 
-          {/* {Logout Button} */}
+          {/* Logout Button */}
           <button
             onClick={() => {
               localStorage.removeItem("lastUser");
@@ -64,13 +64,13 @@ function Dashboard() {
         </div>
       </header>
 
-      <main className="w-full max-w-6xl space-y-12">
+      <main className="w-full max-w-6xl space-y-16 md:space-y-20">
         {/* Live Matches */}
-        <section>
-          <h2 className="text-xl font-semibold mb-6 text-gray-200">
+        <section className="bg-[#10121A]/70 p-6 md:p-8 rounded-2xl shadow-inner shadow-black/40">
+          <h2 className="text-xl font-semibold mb-6 text-gray-200 border-l-4 border-blue-500 pl-3">
             Live Matches
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 justify-items-center">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 justify-items-center">
             {liveMatches.map((m) => (
               <MatchCard
                 key={m.id}
@@ -85,11 +85,11 @@ function Dashboard() {
         </section>
 
         {/* Upcoming Fixtures */}
-        <section>
-          <h2 className="text-xl font-semibold mb-6 text-gray-200">
+        <section className="bg-[#10121A]/70 p-6 md:p-8 rounded-2xl shadow-inner shadow-black/40">
+          <h2 className="text-xl font-semibold mb-6 text-gray-200 border-l-4 border-yellow-500 pl-3">
             Upcoming Fixtures
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-10 justify-items-center">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-10 justify-items-center">
             {upcomingFixtures.map((fx) => (
               <FixtureCard
                 key={fx.id}
@@ -104,56 +104,67 @@ function Dashboard() {
         </section>
 
         {/* Trending Match */}
-        <section>
-          <h2 className="text-xl font-semibold mb-6 flex items-center gap-2 text-gray-200">
+        <section className="bg-[#10121A]/70 p-6 md:p-8 rounded-2xl shadow-inner shadow-black/40">
+          <h2 className="text-xl font-semibold mb-6 text-gray-200 border-l-4 border-red-500 pl-3 flex items-center gap-2">
             Trending Match <span className="text-red-500 text-lg">🔥</span>
           </h2>
-          <div className="bg-[#1E1F29] rounded-2xl p-10 border border-gray-700 hover:border-blue-500 hover:shadow-blue-500/30 transition-all flex flex-col items-center text-center shadow-lg shadow-black/40 max-w-3xl mx-auto">
-            <div className="flex items-center justify-center gap-6 mb-4">
-              <div className="flex items-center gap-2">
-                <img
-                  src={logoMap[trending.home]}
-                  alt={trending.home}
-                  className="w-12 h-12 object-contain"
-                />
-                <p className="font-bold text-lg">{trending.home}</p>
+
+          <div className="bg-gradient-to-r from-red-600 via-pink-600 to-yellow-500 p-[1px] rounded-2xl shadow-lg shadow-red-500/20 max-w-3xl mx-auto">
+            <div
+              className="bg-[#1E1F29] rounded-2xl p-10 border border-gray-800 
+              hover:border-red-500 hover:shadow-red-500/30 hover:scale-[1.03]
+              transition-transform duration-300 ease-out flex flex-col items-center text-center 
+              shadow-lg shadow-black/40 cursor-pointer"
+            >
+              <div className="flex items-center justify-center gap-6 mb-4">
+                <div className="flex items-center gap-2">
+                  <img
+                    src={logoMap[trending.home]}
+                    alt={trending.home}
+                    className="w-12 h-12 object-contain"
+                  />
+                  <p className="font-bold text-lg">{trending.home}</p>
+                </div>
+
+                <span className="text-3xl font-extrabold text-blue-400">
+                  {trending.score}
+                </span>
+
+                <div className="flex items-center gap-2">
+                  <p className="font-bold text-lg">{trending.away}</p>
+                  <img
+                    src={logoMap[trending.away]}
+                    alt={trending.away}
+                    className="w-12 h-12 object-contain"
+                  />
+                </div>
               </div>
 
-              <span className="text-3xl font-extrabold text-blue-400">
-                {trending.score}
-              </span>
-
-              <div className="flex items-center gap-2">
-                <p className="font-bold text-lg">{trending.away}</p>
-                <img
-                  src={logoMap[trending.away]}
-                  alt={trending.away}
-                  className="w-12 h-12 object-contain"
-                />
+              <div className="flex flex-col items-center">
+                <span className="text-green-400 text-xs font-semibold bg-green-900/70 px-4 py-1 rounded-md mb-2">
+                  {trending.status}
+                </span>
+                <button className="underline text-sm text-gray-400 hover:text-white">
+                  STAT
+                </button>
               </div>
-            </div>
-
-            <div className="flex flex-col items-center">
-              <span className="text-green-400 text-xs font-semibold bg-green-900/70 px-4 py-1 rounded-md mb-2">
-                {trending.status}
-              </span>
-              <button className="underline text-sm text-gray-400 hover:text-white">
-                STAT
-              </button>
             </div>
           </div>
         </section>
 
         {/* Quick Stats */}
-        <section>
-          <h2 className="text-xl font-semibold mb-6 text-gray-200">
+        <section className="bg-[#10121A]/70 p-6 md:p-8 rounded-2xl shadow-inner shadow-black/40">
+          <h2 className="text-xl font-semibold mb-6 text-gray-200 border-l-4 border-blue-500 pl-3">
             Quick Stats
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 justify-items-center">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 justify-items-center">
             {quickStats.map((s) => (
               <div
                 key={s.id}
-                className="bg-[#1E1F29] rounded-2xl p-6 text-center border border-gray-700 hover:border-blue-500 hover:shadow-blue-500/20 transition-all shadow-lg shadow-black/40 w-full"
+                className="bg-[#1E1F29] rounded-2xl p-6 text-center border border-gray-700 
+                hover:border-blue-500 hover:shadow-blue-500/30 hover:scale-[1.03]
+                transition-transform duration-300 ease-out 
+                shadow-lg shadow-black/40 w-full cursor-pointer"
               >
                 <p className="text-gray-400 text-sm">{s.label}</p>
                 <p className="text-2xl font-bold text-white">{s.value}</p>
@@ -163,8 +174,17 @@ function Dashboard() {
         </section>
       </main>
 
-      <footer className="text-gray-500 text-xs mt-12 mb-4 text-center">
-        Copyright © 2025 BerrySport Limited. All rights reserved.
+      {/* Back to Top Button */}
+      <button
+        onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+        className="fixed bottom-6 right-6 bg-blue-600 hover:bg-blue-700 text-white rounded-full p-3 shadow-lg shadow-blue-500/30 transition"
+      >
+        ↑
+      </button>
+
+      {/* Footer */}
+      <footer className="border-t border-gray-800 text-gray-500 text-xs sm:text-sm mt-16 py-4 text-center">
+        © 2025 BerrySport Limited. All rights reserved.
       </footer>
     </div>
   );

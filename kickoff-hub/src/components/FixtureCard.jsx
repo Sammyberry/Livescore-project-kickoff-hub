@@ -1,6 +1,12 @@
 function FixtureCard({ home, away, time, homeLogo, awayLogo }) {
   return (
-    <div className="bg-[#1E1F29] rounded-2xl p-6 border border-gray-700 hover:border-blue-500 hover:shadow-blue-500/20 transition-all shadow-lg shadow-black/40 flex flex-col justify-center items-center min-h-[150px] w-full max-w-[420px] mx-auto text-center">
+    <div
+      className="bg-[#1E1F29] rounded-2xl p-6 border border-gray-700
+      hover:border-yellow-500 hover:shadow-yellow-500/30 hover:scale-[1.03]
+      transition-transform duration-300 ease-out shadow-lg shadow-black/40
+      flex flex-col justify-center items-center min-h-[150px] w-full
+      max-w-[420px] mx-auto text-center cursor-pointer"
+    >
       <div className="flex items-center justify-center gap-4 flex-wrap mb-3">
         {/* Home */}
         <div className="flex items-center gap-2 min-w-0">

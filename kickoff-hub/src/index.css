@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+* {
+    transition: all 0.2s ease-in-out;
+}
+
 @keyframes glowSweep {
     0% {
         background-position: 200% 0;
@@ -34,4 +38,22 @@
     background-clip: text;
     -webkit-text-fill-color: transparent;
     animation: glowSweep 4s linear infinite, pulseGlow 3s ease-in-out infinite;
+}
+
+@keyframes goldShimmer {
+    0% {
+        color: #d1b000;
+    }
+
+    50% {
+        color: #fff5b1;
+    }
+
+    100% {
+        color: #d1b000;
+    }
+}
+
+.animate-goldShimmer {
+    animation: goldShimmer 3s ease-in-out infinite;
 }

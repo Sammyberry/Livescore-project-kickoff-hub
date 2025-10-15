@@ -1,6 +1,12 @@
 function MatchCard({ home, away, score, homeLogo, awayLogo }) {
   return (
-    <div className="bg-[#1E1F29] rounded-2xl p-6 border border-gray-700 hover:border-blue-500 hover:shadow-blue-500/20 transition-all text-center shadow-lg shadow-black/40 w-full max-w-[260px] sm:max-w-[320px]">
+    <div
+      className="bg-[#1E1F29] rounded-2xl p-6 border border-gray-700 
+      hover:border-blue-500 hover:shadow-blue-500/30 hover:scale-[1.03]
+      transition-transform duration-300 ease-out text-center 
+      shadow-lg shadow-black/40 w-full max-w-[260px] sm:max-w-[320px]
+      cursor-pointer"
+    >
       <div className="flex items-center justify-between gap-3 flex-wrap">
         {/* Home Team */}
         <div className="flex items-center gap-2 min-w-0">
