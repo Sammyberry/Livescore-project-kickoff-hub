@@ -47,7 +47,7 @@ export default function MatchDetails() {
       <div className="max-w-6xl mx-auto">
         <button
           onClick={() => navigate(-1)}
-          className="text-yellow-400 underline hover:text-yellow-500 mb-6"
+          className="text-white underline hover:text-gray-300 cursor-pointer mb-6"
         >
           ← Back
         </button>
@@ -90,7 +90,7 @@ export default function MatchDetails() {
           </div>
         ) : null}
 
-        <h2 className="text-2xl font-bold text-yellow-400 mb-4">
+        <h2 className="text-2xl font-bold text-green-400 mb-4">
           Match Statistics
         </h2>
 
@@ -99,7 +99,7 @@ export default function MatchDetails() {
             <div
               key={s.label}
               className="bg-[#1E1F29] rounded-2xl p-6 border border-gray-700 
-                         hover:border-yellow-500 hover:shadow-yellow-500/30 hover:scale-[1.02]
+                         hover:shadow-green-500/30 hover:scale-[1.02]
                          transition-transform duration-300 ease-out shadow-lg shadow-black/40"
             >
               <p className="text-gray-400 text-sm">{s.label}</p>
@@ -107,6 +107,39 @@ export default function MatchDetails() {
             </div>
           ))}
         </div>
+
+        {/* Lineups Section */}
+        {match.lineups && (
+          <div className="mt-12">
+            <h2 className="text-2xl font-bold text-yellow-400 mb-6">Lineups</h2>
+
+            <div className="grid sm:grid-cols-2 gap-8">
+              {/* Home Lineup */}
+              <div className="bg-[#1E1F29] p-6 rounded-2xl shadow-md hover:shadow-yellow-500/30 transition">
+                <h3 className="text-lg font-semibold mb-2">
+                  {match.home} ({match.lineups.home.formation})
+                </h3>
+                <ul className="space-y-1 text-gray-300">
+                  {match.lineups.home.players.map((player, i) => (
+                    <li key={i}>• {player}</li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* Away Lineup */}
+              <div className="bg-[#1E1F29] p-6 rounded-2xl shadow-md hover:shadow-yellow-500/30 transition">
+                <h3 className="text-lg font-semibold mb-2">
+                  {match.away} ({match.lineups.away.formation})
+                </h3>
+                <ul className="space-y-1 text-gray-300">
+                  {match.lineups.away.players.map((player, i) => (
+                    <li key={i}>• {player}</li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
