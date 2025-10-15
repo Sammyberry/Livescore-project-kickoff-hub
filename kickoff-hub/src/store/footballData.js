@@ -1,91 +1,59 @@
-// src/services/footballData.js
-const BASE_URL = "https://api.football-data.org/v4";
-const TOKEN = import.meta.env.VITE_FD_TOKEN;
+// ✅ src/store/footballData.js
+// Handles fetching football match data from the Football-Data.org API
 
-// football-data.org uses the X-Auth-Token header for auth.
-const headers = { "X-Auth-Token": TOKEN };
+const API_BASE = "https://api.football-data.org/v4";
+const PROXY = "https://cors-anywhere.herokuapp.com/"; // 👈 Temporary fix for browser CORS
+const API_KEY = "6a0980553f8c42d8882bfc541c942917"; // ⚠️ Your token — keep private if you ever deploy
 
-function buildUrl(path, params) {
-  const url = new URL(BASE_URL + path);
-  if (params) {
-    Object.entries(params).forEach(([k, v]) => {
-      if (v !== undefined && v !== null && v !== "") url.searchParams.set(k, v);
-    });
-  }
-  return url.toString();
-}
+// --- 1️⃣ Generic Request Helper ---
+async function request(endpoint) {
+  const res = await fetch(`${PROXY}${API_BASE}${endpoint}`, {
+    headers: {
+      "X-Auth-Token": API_KEY,
+    },
+  });
 
-async function request(path, params) {
-  const res = await fetch(buildUrl(path, params), { headers });
   if (!res.ok) {
-    const text = await res.text();
-    throw new Error(`API ${res.status}: ${text}`);
+    const errText = await res.text();
+    console.error(`❌ API ${res.status}: ${errText}`);
+    throw new Error(`API ${res.status}: ${errText}`);
   }
+
   return res.json();
 }
 
-/** Get today's matches (API defaults to today in UTC). */
+// --- 2️⃣ Fetch Today’s Matches ---
 export async function getTodayMatches() {
-  // I may add filters later like { date: "YESTERDAY" } or dateFrom/dateTo.
-  return request("/matches");
+  const today = new Date().toISOString().split("T")[0];
+  const endpoint = `/matches?dateFrom=${today}&dateTo=${today}`;
+  return request(endpoint);
 }
 
-// ---- Helpers to map API -> my store shape ----
-const LIVE = new Set(["IN_PLAY", "PAUSED", "EXTRA_TIME", "PENALTY_SHOOTOUT"]);
-const UPCOMING = new Set(["SCHEDULED", "TIMED"]);
-// Status values are defined by the API. :contentReference[oaicite:1]{index=1}
+// --- 3️⃣ Transform API Data into App Format ---
+export function mapMatchesToStore(apiData) {
+  if (!apiData || !apiData.matches) return { liveMatches: [], upcomingFixtures: [] };
 
-export function mapMatchesToStore(json) {
-  const items = json?.matches ?? [];
-  const liveMatches = items.filter((m) => LIVE.has(m.status)).map(toLiveCard);
+  const liveMatches = apiData.matches
+    .filter((m) => m.status === "IN_PLAY" || m.status === "LIVE")
+    .map((m) => ({
+      id: m.id,
+      home: m.homeTeam?.name || "Unknown",
+      away: m.awayTeam?.name || "Unknown",
+      score: `${m.score?.fullTime?.home ?? 0} - ${m.score?.fullTime?.away ?? 0}`,
+      status: m.status,
+    }));
 
-  const upcomingFixtures = items
-    .filter((m) => UPCOMING.has(m.status))
-    .map(toFixtureCard);
+  const upcomingFixtures = apiData.matches
+    .filter((m) => m.status === "SCHEDULED")
+    .map((m) => ({
+      id: m.id,
+      home: m.homeTeam?.name || "Unknown",
+      away: m.awayTeam?.name || "Unknown",
+      time: new Date(m.utcDate).toLocaleTimeString([], {
+        hour: "2-digit",
+        minute: "2-digit",
+      }),
+    }));
 
   return { liveMatches, upcomingFixtures };
-}
-
-function toLiveCard(m) {
-  return {
-    id: m.id,
-    home: m.homeTeam?.name || "Home",
-    away: m.awayTeam?.name || "Away",
-    score: formatScore(m),
-    status: m.status,
-    utcDate: m.utcDate,
-  };
-}
-
-function toFixtureCard(m) {
-  return {
-    id: m.id,
-    home: m.homeTeam?.name || "Home",
-    away: m.awayTeam?.name || "Away",
-    time: formatLocalTime(m.utcDate),
-    utcDate: m.utcDate,
-  };
-}
-
-function formatScore(m) {
-  const ft = m?.score?.fullTime;
-  if (ft && ft.home != null && ft.away != null)
-    return `${ft.home} - ${ft.away}`;
-  const ht = m?.score?.halfTime;
-  if (ht && ht.home != null && ht.away != null)
-    return `${ht.home} - ${ht.away}`;
-  return "— : —";
-}
-
-function formatLocalTime(utc) {
-  try {
-    const d = new Date(utc);
-    return d.toLocaleString(undefined, {
-      weekday: "short",
-      hour: "2-digit",
-      minute: "2-digit",
-    });
-  } catch {
-    return "";
-  }
 }

@@ -196,7 +196,7 @@ function Dashboard() {
                       });
                     }
                   }}
-                  className="underline text-sm text-gray-400 hover:text-white"
+                  className="mt-7 cursor-pointer underline text-sm text-gray-400 hover:text-white"
                 >
                   Go to Match Stats
                 </button>

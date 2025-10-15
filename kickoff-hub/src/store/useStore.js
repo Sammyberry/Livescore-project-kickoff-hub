@@ -1,5 +1,6 @@
+// ✅ src/store/useStore.js
 import { create } from "zustand";
-import { getTodayMatches, mapMatchesToStore } from "../store/footballData";
+import { getTodayMatches, mapMatchesToStore } from "../store/footballData"; // ✅ FIXED: correct folder path
 
 export const useStore = create((set, get) => ({
   // --- Seed data (fallbacks) ---
@@ -33,25 +34,30 @@ export const useStore = create((set, get) => ({
   loadTodayFromAPI: async () => {
     try {
       set({ loading: true, error: null });
-      const json = await getTodayMatches(); // defaults to today :contentReference[oaicite:2]{index=2}
+
+      // ✅ Step 1: Fetch matches from API
+      const json = await getTodayMatches();
+
+      // ✅ Step 2: Map API data to your app structure
       const { liveMatches, upcomingFixtures } = mapMatchesToStore(json);
 
-      // Derive a trending match: first live if exists, else keep previous
+      // ✅ Step 3: Pick a trending match (first live one, or fallback)
       let trending = get().trending;
-      if (liveMatches.length) {
+      if (liveMatches.length > 0) {
         const t = liveMatches[0];
         trending = {
           id: t.id,
           home: t.home,
           away: t.away,
           score: t.score,
-          status: "LIVE",
+          status: t.status || "LIVE",
         };
       }
 
+      // ✅ Step 4: Update Zustand store
       set({ liveMatches, upcomingFixtures, trending, loading: false });
     } catch (e) {
-      console.error(e);
+      console.error("❌ API Load Error:", e);
       set({ error: e.message || "Failed to load matches", loading: false });
     }
   },
