@@ -26,11 +26,11 @@ async function request(path, params) {
 
 /** Get today's matches (API defaults to today in UTC). */
 export async function getTodayMatches() {
-  // You can add filters later like { date: "YESTERDAY" } or dateFrom/dateTo.
+  // I may add filters later like { date: "YESTERDAY" } or dateFrom/dateTo.
   return request("/matches");
 }
 
-// ---- Helpers to map API -> your store shape ----
+// ---- Helpers to map API -> my store shape ----
 const LIVE = new Set(["IN_PLAY", "PAUSED", "EXTRA_TIME", "PENALTY_SHOOTOUT"]);
 const UPCOMING = new Set(["SCHEDULED", "TIMED"]);
 // Status values are defined by the API. :contentReference[oaicite:1]{index=1}
