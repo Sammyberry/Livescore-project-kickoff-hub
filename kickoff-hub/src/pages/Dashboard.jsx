@@ -1,4 +1,3 @@
-// src/pages/Dashboard.jsx
 import Header from "../components/Header";
 import MatchCard from "../components/MatchCard";
 import FixtureCard from "../components/FixtureCard";
@@ -34,7 +33,7 @@ function Dashboard() {
   const navigate = useNavigate();
   const { liveMatches, upcomingFixtures, trending, quickStats } = useStore();
 
-  // 🔗 One place to handle navigation to details
+  // One place to handle navigation to details
   const goToMatch = (match) => {
     if (!match?.id) {
       console.warn("Match missing id. Please ensure each match has a stable id.");
@@ -74,6 +73,7 @@ function Dashboard() {
       </header>
 
       <main className="w-full max-w-6xl space-y-16 md:space-y-20">
+       
         {/* Live Matches */}
         <section className="bg-[#10121A]/70 p-6 md:p-8 rounded-2xl shadow-inner shadow-black/40">
           <h2 className="text-xl font-semibold mb-6 text-gray-200 border-l-4 border-blue-500 pl-3">
@@ -155,7 +155,7 @@ function Dashboard() {
                   {trending.status}
                 </span>
 
-                {/* 👇 STAT now routes to the same details page */}
+                {/* STAT now routes to the same details page */}
                 <button
                   onClick={() => goToMatch(trending)}
                   className="underline text-sm text-gray-400 hover:text-white"
