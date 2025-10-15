@@ -1,5 +1,7 @@
 import Header from "../components/Header";
 import { useNavigate } from "react-router-dom";
+import { useEffect, useStore } from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
 
 // Logos
@@ -12,6 +14,28 @@ import champions from "../assets/logos/champions.jpg";
 
 function Profile() {
   const navigate = useNavigate();
+
+  const [username, setUsername] = useState("");
+   useEffect(() => {
+     const storedUser = localStorage.getItem("lastUser");
+     if (storedUser) {
+       setUsername(storedUser);
+     }
+   }, []);
+
+   const [avatar, setAvatar] = useState("userAvatar") || null;
+   const handleAvatarChange = (e) => {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          setAvatar(reader.result);
+          localStorage.setItem("userAvatar", reader.result);
+        };
+        reader.readAsDataURL(file);
+      }
+   };
+
 
   return (
     <div className="min-h-screen bg-[#0A0A0F] text-white flex flex-col items-center px-4 py-6">
@@ -37,11 +61,76 @@ function Profile() {
       >
         {/* Left section */}
         <div className="flex flex-col items-center w-full md:w-1/3 text-center">
-          <div className="w-32 h-32 bg-gray-600 rounded-full mb-5 mt-10 border-4 border-gray-700 hover:border-blue-500 transition-all duration-300"></div>
-          <h2 className="text-lg font-semibold mb-4 text-blue-400 tracking-wide">
-            Username
-          </h2>
+         
+          {/* {Avatar} */}
+          <div className="relative w-32 h-32 mb-5 mt-10 group">
+            <label
+              htmlFor="avatar-upload"
+              className="cursor-pointer block relative"
+            >
+              {/* Avatar container */}
+              <div className="w-32 h-32 rounded-full border-4 border-gray-700 hover:border-blue-500 overflow-hidden transition-all duration-300 bg-[#1E1F29] flex items-center justify-center">
+                {avatar ? (
+                  <img
+                    src={avatar}
+                    alt="User Avatar"
+                    className="w-full h-full object-cover rounded-full transition-all duration-300 group-hover:opacity-80"
+                  />
+                ) : (
+                  <div className="flex flex-col items-center justify-center text-gray-400">
+                    {/* User silhouette icon */}
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth={1.5}
+                      stroke="currentColor"
+                      className="w-10 h-10 opacity-70"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M15.75 7.5a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.5 19.5a8.25 8.25 0 1115 0"
+                      />
+                    </svg>
+                  </div>
+                )}
 
+                {/* Hover overlay with camera icon */}
+                <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity duration-300">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth={1.8}
+                    stroke="currentColor"
+                    className="w-8 h-8 text-white"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M12 16V8m0 0l-3.5 3.5M12 8l3.5 3.5M4 16a8 8 0 1116 0v2H4v-2z"
+                    />
+                  </svg>
+                </div>
+              </div>
+            </label>
+
+            {/* Hidden file input */}
+            <input
+              id="avatar-upload"
+              type="file"
+              accept="image/*"
+              onChange={handleAvatarChange}
+              className="hidden"
+            />
+          </div>
+
+          {/* Username */}
+          <h2 className="text-lg font-semibold mb-4 text-blue-400 tracking-wide">
+            {username || "Guest User"}
+          </h2>
+          {/* About Us */}
           <p className="text-sm text-gray-400 mb-3 italic">About Us</p>
           <div className="text-sm text-gray-400 mb-4">
             <p>
