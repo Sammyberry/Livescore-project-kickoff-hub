@@ -1,4 +1,3 @@
-// src/components/MatchCard.jsx
 function MatchCard({ home, away, score, homeLogo, awayLogo, onClick }) {
   return (
     <div

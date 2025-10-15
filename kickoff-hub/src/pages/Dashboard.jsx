@@ -1,3 +1,4 @@
+// src/pages/Dashboard.jsx
 import Header from "../components/Header";
 import MatchCard from "../components/MatchCard";
 import FixtureCard from "../components/FixtureCard";
@@ -32,6 +33,14 @@ const logoMap = {
 function Dashboard() {
   const navigate = useNavigate();
   const { liveMatches, upcomingFixtures, trending, quickStats } = useStore();
+
+  // 🔗 One place to handle navigation to details
+  const goToMatch = (match) => {
+    if (!match?.id) {
+      console.warn("Match missing id. Please ensure each match has a stable id.");
+    }
+    navigate(`/match/${match.id}`, { state: match });
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#0A0A0F] to-[#121420] text-white flex flex-col items-center px-4 py-6 relative">
@@ -79,6 +88,7 @@ function Dashboard() {
                 score={m.score}
                 homeLogo={logoMap[m.home]}
                 awayLogo={logoMap[m.away]}
+                onClick={() => goToMatch(m)}
               />
             ))}
           </div>
@@ -114,7 +124,7 @@ function Dashboard() {
               className="bg-[#1E1F29] rounded-2xl p-10 border border-gray-800 
               hover:border-red-500 hover:shadow-red-500/30 hover:scale-[1.03]
               transition-transform duration-300 ease-out flex flex-col items-center text-center 
-              shadow-lg shadow-black/40 cursor-pointer"
+              shadow-lg shadow-black/40"
             >
               <div className="flex items-center justify-center gap-6 mb-4">
                 <div className="flex items-center gap-2">
@@ -144,7 +154,12 @@ function Dashboard() {
                 <span className="text-green-400 text-xs font-semibold bg-green-900/70 px-4 py-1 rounded-md mb-2">
                   {trending.status}
                 </span>
-                <button className="underline text-sm text-gray-400 hover:text-white">
+
+                {/* 👇 STAT now routes to the same details page */}
+                <button
+                  onClick={() => goToMatch(trending)}
+                  className="underline text-sm text-gray-400 hover:text-white"
+                >
                   STAT
                 </button>
               </div>
@@ -174,7 +189,7 @@ function Dashboard() {
         </section>
       </main>
 
-      {/* Back to Top Button */}
+      {/* Back to Top */}
       <button
         onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
         className="fixed bottom-6 right-6 bg-blue-600 hover:bg-blue-700 text-white rounded-full p-3 shadow-lg shadow-blue-500/30 transition"
