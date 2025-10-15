@@ -1,10 +1,11 @@
+import { useEffect } from "react"; // NEW
 import Header from "../components/Header";
 import MatchCard from "../components/MatchCard";
 import FixtureCard from "../components/FixtureCard";
 import { useNavigate } from "react-router-dom";
 import { useStore } from "../store/useStore";
 
-// Logos
+// Logos (unchanged)
 import arsenal from "../assets/logos/arsenal.png";
 import chelsea from "../assets/logos/chelsea.png";
 import barcelona from "../assets/logos/barcelona.png";
@@ -16,32 +17,41 @@ import dortmund from "../assets/logos/dortmund.png";
 import napoli from "../assets/logos/napoli.png";
 import inter from "../assets/logos/inter.png";
 
-const logoMap = {
-  Arsenal: arsenal,
-  Chelsea: chelsea,
-  Barcelona: barcelona,
-  "Real Madrid": realmadrid,
-  "Man City": mancity,
-  Liverpool: liverpool,
-  Bayern: bayern,
-  Dortmund: dortmund,
-  Napoli: napoli,
-  Inter: inter,
+// Helper to tolerate different official team names from the API // NEW
+const getLogo = (teamName = "") => {
+  const n = teamName.toLowerCase();
+  if (n.includes("arsenal")) return arsenal;
+  if (n.includes("chelsea")) return chelsea;
+  if (n.includes("barcelona")) return barcelona;
+  if (n.includes("real madrid")) return realmadrid;
+  if (n.includes("manchester city")) return mancity;
+  if (n.includes("liverpool")) return liverpool;
+  if (n.includes("bayern")) return bayern;
+  if (n.includes("dortmund")) return dortmund;
+  if (n.includes("napoli")) return napoli;
+  if (n.includes("inter")) return inter;
+  return undefined;
 };
 
 function Dashboard() {
   const navigate = useNavigate();
-  const { liveMatches, upcomingFixtures, trending, quickStats } = useStore();
 
-  // One place to handle navigation to details
-  const goToMatch = (match) => {
-    if (!match?.id) {
-      console.warn(
-        "Match missing id. Please ensure each match has a stable id."
-      );
-    }
-    navigate(`/match/${match.id}`, { state: match });
-  };
+  // bring in loader + states
+  const {
+    liveMatches,
+    upcomingFixtures,
+    trending,
+    quickStats,
+    loading,
+    error,
+    loadTodayFromAPI,
+  } = useStore();
+
+  // Load from API on mount
+  useEffect(() => {
+    loadTodayFromAPI();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#0A0A0F] to-[#121420] text-white flex flex-col items-center px-4 py-6 relative">
@@ -53,15 +63,12 @@ function Dashboard() {
         </span>
 
         <div className="flex items-center gap-6">
-          {/* Profile Button */}
           <button
             onClick={() => navigate("/profile")}
             className="cursor-pointer hover:bg-[#1E1F29] hover:underline text-white font-medium py-2 px-6 rounded-lg transition"
           >
             Profile
           </button>
-
-          {/* Logout Button */}
           <button
             onClick={() => {
               localStorage.removeItem("lastUser");
@@ -80,6 +87,13 @@ function Dashboard() {
           <h2 className="text-xl font-semibold mb-6 text-gray-200 border-l-4 border-blue-500 pl-3">
             Live Matches
           </h2>
+
+          {loading && <p className="text-gray-400">Loading today’s matches…</p>}
+          {error && <p className="text-red-400">{error}</p>}
+          {!loading && !error && liveMatches.length === 0 && (
+            <p className="text-gray-400">No live matches right now.</p>
+          )}
+
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 justify-items-center">
             {liveMatches.map((m) => (
               <MatchCard
@@ -87,14 +101,14 @@ function Dashboard() {
                 home={m.home}
                 away={m.away}
                 score={m.score}
-                homeLogo={logoMap[m.home]}
-                awayLogo={logoMap[m.away]}
+                homeLogo={getLogo(m.home)} // NEW
+                awayLogo={getLogo(m.away)} // NEW
                 onClick={() =>
                   navigate(`/match/${m.id}`, {
                     state: {
                       ...m,
-                      homeLogo: logoMap[m.home],
-                      awayLogo: logoMap[m.away],
+                      homeLogo: getLogo(m.home),
+                      awayLogo: getLogo(m.away),
                     },
                   })
                 }
@@ -115,8 +129,8 @@ function Dashboard() {
                 home={fx.home}
                 away={fx.away}
                 time={fx.time}
-                homeLogo={logoMap[fx.home]}
-                awayLogo={logoMap[fx.away]}
+                homeLogo={getLogo(fx.home)} // NEW
+                awayLogo={getLogo(fx.away)} // NEW
               />
             ))}
           </div>
@@ -133,12 +147,12 @@ function Dashboard() {
               className="bg-[#1E1F29] rounded-2xl p-10 border border-gray-800 
               hover:border-red-500 hover:shadow-red-500/30 hover:scale-[1.03]
               transition-transform duration-300 ease-out flex flex-col items-center text-center 
-              shadow-lg shadow-black/40"
+              shadow-lg shadow-black/40 cursor-pointer"
             >
               <div className="flex items-center justify-center gap-6 mb-4">
                 <div className="flex items-center gap-2">
                   <img
-                    src={logoMap[trending.home]}
+                    src={getLogo(trending.home)}
                     alt={trending.home}
                     className="w-12 h-12 object-contain"
                   />
@@ -152,7 +166,7 @@ function Dashboard() {
                 <div className="flex items-center gap-2">
                   <p className="font-bold text-lg">{trending.away}</p>
                   <img
-                    src={logoMap[trending.away]}
+                    src={getLogo(trending.away)}
                     alt={trending.away}
                     className="w-12 h-12 object-contain"
                   />
@@ -160,30 +174,38 @@ function Dashboard() {
               </div>
 
               <div className="flex flex-col items-center">
-                <span className="text-green-400 text-xs font-semibold bg-green-900/70 px-4 py-1 rounded-md mb-2">
-                  {trending.status}
-                </span>
+                {trending.status && (
+                  <span className="text-green-400 text-xs font-semibold bg-green-900/70 px-4 py-1 rounded-md mb-2">
+                    {trending.status}
+                  </span>
+                )}
 
-                {/* STAT now routes to the same details page */}
+                {/* STAT button routes to the full match from liveMatches if possible */}
                 <button
                   onClick={() => {
-                    const match = liveMatches.find((m) => m.id === trending.id);
+                    const match =
+                      liveMatches.find((m) => m.id === trending.id) ||
+                      liveMatches[0];
                     if (match) {
                       navigate(`/match/${match.id}`, {
-                        state: match,
+                        state: {
+                          ...match,
+                          homeLogo: getLogo(match.home),
+                          awayLogo: getLogo(match.away),
+                        },
                       });
                     }
                   }}
-                  className="mt-5 underline text-sm text-gray-400 hover:text-white cursor-pointer"
+                  className="underline text-sm text-gray-400 hover:text-white"
                 >
-                  Go to stats →
+                  Go to Match Stats
                 </button>
               </div>
             </div>
           </div>
         </section>
 
-        {/* Quick Stats */}
+        {/* Quick Stats*/}
         <section className="bg-[#10121A]/70 p-6 md:p-8 rounded-2xl shadow-inner shadow-black/40">
           <h2 className="text-xl font-semibold mb-6 text-gray-200 border-l-4 border-blue-500 pl-3">
             Quick Stats
@@ -195,7 +217,7 @@ function Dashboard() {
                 className="bg-[#1E1F29] rounded-2xl p-6 text-center border border-gray-700 
                 hover:border-blue-500 hover:shadow-blue-500/30 hover:scale-[1.03]
                 transition-transform duration-300 ease-out 
-                shadow-lg shadow-black/40 w-full"
+                shadow-lg shadow-black/40 w-full cursor-pointer"
               >
                 <p className="text-gray-400 text-sm">{s.label}</p>
                 <p className="text-2xl font-bold text-white">{s.value}</p>
@@ -205,15 +227,15 @@ function Dashboard() {
         </section>
       </main>
 
-      {/* Back to Top */}
+      {/* Back to Top btn*/}
       <button
         onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
         className="fixed bottom-6 right-6 bg-blue-600 hover:bg-blue-700 text-white rounded-full p-3 shadow-lg shadow-blue-500/30 transition"
       >
         ↑
       </button>
-
-      {/* Footer */}
+      
+      {/* {footer} */}
       <footer className="border-t border-gray-800 text-gray-500 text-xs sm:text-sm mt-16 py-4 text-center">
         © 2025 BerrySport Limited. All rights reserved.
       </footer>
