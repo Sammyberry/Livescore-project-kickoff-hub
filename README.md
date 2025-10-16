@@ -46,3 +46,5 @@ The app is a **demo build** (no live API yet), but it’s structured to easily i
 - Implement favorite team tracking
 - Add dark/light mode toggle
 
+## 🚀 Live Demo  
+👉 [KickOffHub Live on Netlify](https://kickoffhub.netlify.app/)
