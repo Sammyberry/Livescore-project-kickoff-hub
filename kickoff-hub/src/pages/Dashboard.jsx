@@ -61,7 +61,7 @@ function Dashboard() {
               localStorage.removeItem("lastUser");
               navigate("/");
             }}
-            className="text-red-500 hover:text-red-400 font-semibold transition"
+            className="text-red-500 hover:text-red-400 font-semibold transition cursor-pointer"
           >
             Logout
           </button>
@@ -180,7 +180,7 @@ function Dashboard() {
                 className="bg-[#1E1F29] rounded-2xl p-6 text-center border border-gray-700 
                 hover:border-blue-500 hover:shadow-blue-500/30 hover:scale-[1.03]
                 transition-transform duration-300 ease-out 
-                shadow-lg shadow-black/40 w-full cursor-pointer"
+                shadow-lg shadow-black/40 w-full"
               >
                 <p className="text-gray-400 text-sm">{s.label}</p>
                 <p className="text-2xl font-bold text-white">{s.value}</p>

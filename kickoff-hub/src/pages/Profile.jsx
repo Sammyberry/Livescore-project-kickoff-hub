@@ -60,12 +60,12 @@ function Profile() {
         {/* Left section */}
         <div className="flex flex-col items-center w-full md:w-1/3 text-center">
           {/* Avatar */}
-          <div className="relative w-28 h-28 sm:w-32 sm:h-32 mb-5 mt-5 group">
+          <div className="relative w-28 h-28 sm:w-32 sm:h-32 group">
             <label
               htmlFor="avatar-upload"
               className="cursor-pointer block relative"
             >
-              <div className="w-full h-full rounded-full border-4 border-gray-700 hover:border-blue-500 overflow-hidden transition-all duration-300 bg-[#1E1F29] flex items-center justify-center">
+              <div className="w-full h-full rounded-full border-4 border-gray-700 hover:border-blue-500 overflow-hidden transition-all duration-300 bg-[#1E1F29] flex items-center justify-center -mt-5">
                 {avatar ? (
                   <img
                     src={avatar}
@@ -140,7 +140,7 @@ function Profile() {
 
         {/* Right section */}
         <div className="w-full md:w-2/3 text-center md:text-left">
-          <h1 className="text-xl sm:text-2xl md:text-3xl font-semibold mt-6 mb-6 text-gray-200 text-center md:text-left">
+          <h1 className="text-xl sm:text-2xl md:text-3xl font-semibold mb-20 text-gray-200 text-center md:text-left">
             Check Your Favourite Leagues
           </h1>
 

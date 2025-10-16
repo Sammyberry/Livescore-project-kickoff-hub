@@ -4,7 +4,7 @@ import { useStore } from "../store/useStore";
 export default function MatchDetails() {
   const navigate = useNavigate();
   const { id } = useParams();
-  const { state } = useLocation(); // match object if passed via navigate(..., { state })
+  const { state } = useLocation();
   const { liveMatches, upcomingFixtures, trending } = useStore();
 
   const numericId = isNaN(Number(id)) ? id : Number(id);
@@ -29,7 +29,7 @@ export default function MatchDetails() {
     );
   }
 
-  // Temporary placeholder stats — swap with API later
+  // Temporary placeholder stats may swap with API later
   const stats = [
     { label: "Possession", value: "55% - 45%" },
     { label: "Shots", value: "12 - 7" },
